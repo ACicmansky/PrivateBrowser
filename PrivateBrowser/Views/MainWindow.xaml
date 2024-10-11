@@ -25,7 +25,14 @@
             <Button Content="Forward"
                     Command="{Binding NavigateForwardCommand}" />
             <TextBox Width="600"
-                     Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding LoadUrlCommand}"
+                                Key="Return" />
+                    <KeyBinding Command="{Binding LoadUrlCommand}"
+                                Key="Enter" />
+                </TextBox.InputBindings>
+            </TextBox>
             <Button Content="Go"
                     Command="{Binding LoadUrlCommand}" />
         </StackPanel>

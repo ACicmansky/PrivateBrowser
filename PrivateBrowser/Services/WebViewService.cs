@@ -31,20 +31,8 @@ namespace PrivateBrowser.Services
                 Console.WriteLine("Navigation completed.");
             };
 
-            _webView.CoreWebView2InitializationCompleted += (sender, args) =>
-            {
-                //TODO improve
-                if (args.IsSuccess)
-                {
-                    _webView.CoreWebView2.WebResourceRequested += OnWebResourceRequested;
-                    NavigateTo("https://duckduckgo.com/");
-                }
-                else
-                {                    
-                    Console.WriteLine("CoreWebView2 initialization failed.");
-                    NavigateTo("https://www.google.com/");
-                }
-            };
+            _webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
+            _webView.CoreWebView2.WebResourceRequested += OnWebResourceRequested;
         }
 
         public void GoBack()
@@ -74,9 +62,7 @@ namespace PrivateBrowser.Services
 
         private void OnWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
         {
-            //TODO improve
             var request = e.Request;
-            Console.WriteLine($"Request made for: {request.Uri}");
 
             if (_trackerBlocker.IsTracker(request.Uri)) 
             { 

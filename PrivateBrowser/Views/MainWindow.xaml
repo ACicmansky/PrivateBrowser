@@ -1,0 +1,38 @@
+﻿<Window x:Class="PrivateBrowser.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:viewModels="clr-namespace:PrivateBrowser.ViewModels"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
+        Title="Private Browser"
+        Height="600"
+        Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Navigation Bar -->
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Back"
+                    Command="{Binding NavigateBackCommand}" />
+            <Button Content="Forward"
+                    Command="{Binding NavigateForwardCommand}" />
+            <TextBox Width="600"
+                     Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Content="Go"
+                    Command="{Binding LoadUrlCommand}" />
+        </StackPanel>
+
+        <!-- WebView2 control for web navigation -->
+        <wv2:WebView2 x:Name="BrowserControl"
+                      Source="{Binding Url}"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      Grid.Row="1" />
+    </Grid>
+</Window>

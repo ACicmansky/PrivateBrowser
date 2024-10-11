@@ -11,20 +11,18 @@ namespace PrivateBrowser
     {
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
-            // Register modules here if needed
         }
 
         protected override Window CreateShell()
         {
-            // Create and return the main window of the application
             return Container.Resolve<MainWindow>();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            // Register services like encryption, tracker blocking, etc.
             containerRegistry.Register<ITrackerBlockerService, TrackerBlockerService>();
             containerRegistry.Register<IEncryptionService, EncryptionService>();
+            containerRegistry.RegisterSingleton<IWebViewService, WebViewService>();
         }
     }
 }

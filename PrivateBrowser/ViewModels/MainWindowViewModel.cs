@@ -10,11 +10,13 @@ namespace PrivateBrowser.ViewModels
         private string? _url;
         private readonly ITrackerBlockerService _trackerBlocker;
         private readonly IEncryptionService _encryptionService;
+        private readonly IWebViewService _webViewService;
 
-        public MainWindowViewModel(ITrackerBlockerService trackerBlocker, IEncryptionService encryptionService)
+        public MainWindowViewModel(ITrackerBlockerService trackerBlocker, IEncryptionService encryptionService, IWebViewService webViewService)
         {
             _trackerBlocker = trackerBlocker;
             _encryptionService = encryptionService;
+            _webViewService = webViewService;
 
             NavigateBackCommand = new DelegateCommand(OnNavigateBack);
             NavigateForwardCommand = new DelegateCommand(OnNavigateForward);
@@ -38,10 +40,12 @@ namespace PrivateBrowser.ViewModels
 
         private void OnNavigateBack()
         {
+            _webViewService.GoBack();
         }
 
         private void OnNavigateForward()
         {
+            _webViewService.GoForward();
         }
 
         private void OnLoadUrl()

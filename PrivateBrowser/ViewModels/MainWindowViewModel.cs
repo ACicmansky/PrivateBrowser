@@ -8,13 +8,12 @@ namespace PrivateBrowser.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private string? _url;
-        private readonly ITrackerBlockerService _trackerBlocker;
+        
         private readonly IEncryptionService _encryptionService;
         private readonly IWebViewService _webViewService;
 
-        public MainWindowViewModel(ITrackerBlockerService trackerBlocker, IEncryptionService encryptionService, IWebViewService webViewService)
+        public MainWindowViewModel(IEncryptionService encryptionService, IWebViewService webViewService)
         {
-            _trackerBlocker = trackerBlocker;
             _encryptionService = encryptionService;
             _webViewService = webViewService;
 
@@ -50,11 +49,8 @@ namespace PrivateBrowser.ViewModels
 
         private void OnLoadUrl()
         {
-            if (_trackerBlocker.IsTracker(Url))
-            {
-                // Block the request and redirect
-                Url = "about:blank";
-            }
+
+            _webViewService.NavigateTo(Url);
         }
 
         private void SaveEncryptedHistory(string url)

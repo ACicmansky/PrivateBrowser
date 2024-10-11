@@ -32,7 +32,6 @@
 
         <!-- WebView2 control for web navigation -->
         <wv2:WebView2 x:Name="BrowserControl"
-                      Source="{Binding Url}"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
                       Grid.Row="1" />

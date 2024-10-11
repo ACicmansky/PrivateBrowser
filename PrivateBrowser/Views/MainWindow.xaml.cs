@@ -15,10 +15,20 @@ namespace PrivateBrowser.Views
             InitializeComponent();
 
             _webViewService = webViewService;
-            BrowserControl.EnsureCoreWebView2Async().ContinueWith(task =>
+            InitializeWebViewAsync();
+        }
+
+        private async void InitializeWebViewAsync()
+        {
+            try
             {
+                await BrowserControl.EnsureCoreWebView2Async();
                 _webViewService.Initialize(BrowserControl);
-            });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"WebView2 initialization failed: {ex.Message}");
+            }
         }
     }
 }

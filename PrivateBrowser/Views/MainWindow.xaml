@@ -16,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Navigation Bar -->
@@ -42,5 +43,15 @@
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
                       Grid.Row="1" />
+
+        <StackPanel Grid.Row="2">
+            <Button Content="View History"
+                    Command="{Binding ViewHistoryCommand}" />
+            <Button Content="Clear History"
+                    Command="{Binding ClearHistoryCommand}" />
+            <ListBox ItemsSource="{Binding HistoryItems}"
+                     Height="100" />
+        </StackPanel>
+
     </Grid>
 </Window>

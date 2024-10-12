@@ -20,9 +20,11 @@ namespace PrivateBrowser
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<ITrackerBlockerService, TrackerBlockerService>();
-            containerRegistry.Register<IEncryptionService, EncryptionService>();
             containerRegistry.RegisterSingleton<IWebViewService, WebViewService>();
+
+            containerRegistry.Register<ITrackerBlockerService, TrackerBlockerService>();
+            containerRegistry.Register<IEncryptionService, EncryptionService>();            
+            containerRegistry.Register<IHistoryService, HistoryService>();
         }
     }
 }

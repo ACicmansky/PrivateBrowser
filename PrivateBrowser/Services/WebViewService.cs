@@ -14,11 +14,14 @@ namespace PrivateBrowser.Services
 
     public class WebViewService : IWebViewService
     {
+        
         private readonly ITrackerBlockerService _trackerBlocker;
+        private readonly IHistoryService _historyService;
         private WebView2 _webView;
 
-        public WebViewService(ITrackerBlockerService trackerBlockerService)
+        public WebViewService(IHistoryService historyService, ITrackerBlockerService trackerBlockerService)
         {
+            _historyService = historyService;
             _trackerBlocker = trackerBlockerService;
         }
 
@@ -33,6 +36,7 @@ namespace PrivateBrowser.Services
 
             _webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
             _webView.CoreWebView2.WebResourceRequested += OnWebResourceRequested;
+            _webView.CoreWebView2.NavigationCompleted += OnNavigationCompleted;
         }
 
         public void GoBack()
@@ -58,6 +62,12 @@ namespace PrivateBrowser.Services
             {
                 _webView.CoreWebView2.WebResourceRequested -= OnWebResourceRequested;
             }
+        }
+
+        private void OnNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+        {
+            string url = _webView.Source.ToString();
+            _historyService.SaveHistory(url);
         }
 
         private void OnWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)

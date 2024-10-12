@@ -1,30 +1,28 @@
 ﻿using PrivateBrowser.Services;
-using System.ComponentModel;
-using System.IO;
-using System.Reactive.Linq;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace PrivateBrowser.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
         private string? _url;
-        
-        private readonly IEncryptionService _encryptionService;
+
+        private readonly IHistoryService _historyService;
         private readonly IWebViewService _webViewService;
 
-        public MainWindowViewModel(IEncryptionService encryptionService, IWebViewService webViewService)
+        public MainWindowViewModel(IHistoryService historyService, IWebViewService webViewService)
         {
-            _encryptionService = encryptionService;
+            _historyService = historyService;
             _webViewService = webViewService;
+
+            HistoryItems = new ObservableCollection<string>();
 
             NavigateBackCommand = new DelegateCommand(OnNavigateBack);
             NavigateForwardCommand = new DelegateCommand(OnNavigateForward);
             LoadUrlCommand = new DelegateCommand(OnLoadUrl);
-
-            Observable.FromEventPattern<PropertyChangedEventArgs>(this, nameof(PropertyChanged))
-                      .Where(e => e.EventArgs.PropertyName == nameof(Url))
-                      .Throttle(TimeSpan.FromMilliseconds(500)) // Debounce URL change
-                      .Subscribe(_ => SaveEncryptedHistory(Url));
+            ViewHistoryCommand = new DelegateCommand(OnViewHistoryCommand);
+            ClearHistoryCommand = new DelegateCommand(OnClearHistoryCommand);
         }
 
         public string? Url
@@ -33,9 +31,13 @@ namespace PrivateBrowser.ViewModels
             set => SetProperty(ref _url, value);
         }
 
+        public ObservableCollection<string> HistoryItems { get; set; }
+
         public DelegateCommand NavigateBackCommand { get; }
         public DelegateCommand NavigateForwardCommand { get; }
         public DelegateCommand LoadUrlCommand { get; }
+        public DelegateCommand ViewHistoryCommand { get; }
+        public DelegateCommand ClearHistoryCommand { get; }
 
         private void OnNavigateBack()
         {
@@ -49,20 +51,19 @@ namespace PrivateBrowser.ViewModels
 
         private void OnLoadUrl()
         {
-
             _webViewService.NavigateTo(Url);
         }
 
-        private void SaveEncryptedHistory(string url)
+        private void OnViewHistoryCommand() 
         {
-            string encryptedUrl = _encryptionService.Encrypt(url);
-            File.AppendAllText("history.dat", encryptedUrl + Environment.NewLine);
+            HistoryItems.Clear();
+            HistoryItems.AddRange(_historyService.LoadHistory());
         }
 
-        private string LoadEncryptedHistory()
+        private void OnClearHistoryCommand() 
         {
-            string cipherText = File.ReadAllText("history.dat");
-            return _encryptionService.Decrypt(cipherText);
+            _historyService.ClearHistory();
+            HistoryItems.Clear();
         }
     }
 }

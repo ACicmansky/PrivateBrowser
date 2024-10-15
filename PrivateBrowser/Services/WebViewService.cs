@@ -53,7 +53,11 @@ namespace PrivateBrowser.Services
 
         public void NavigateTo(string url)
         {
-            _webView.CoreWebView2.Navigate(url);
+            if(Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+            { 
+                _webView.CoreWebView2.Navigate(url);
+            }
         }
 
         public void Dispose()

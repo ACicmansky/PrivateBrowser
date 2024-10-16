@@ -11,8 +11,9 @@
         mc:Ignorable="d"
         Title="Private Browser"
         Style="{StaticResource MaterialDesignWindow}"
-        Height="600"
-        Width="1000">
+        Height="700"
+        Width="1000"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -21,13 +22,51 @@
         </Grid.RowDefinitions>
 
         <!-- Navigation Bar -->
-        <StackPanel Orientation="Horizontal">
-            <Button Content="Back"
-                    Command="{Binding NavigateBackCommand}" />
-            <Button Content="Forward"
-                    Command="{Binding NavigateForwardCommand}" />
-            <TextBox Width="600"
-                     Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}">
+        <Grid Background="{DynamicResource MaterialDesignCardBackground}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <!-- Navigation Buttons -->
+            <Button Content="⮘"
+                    Width="40"
+                    Height="40"
+                    Margin="5"
+                    Command="{Binding NavigateBackCommand}"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    ToolTip="Go Back" />
+
+            <Button Content="⮚"
+                    Grid.Column="1"
+                    Width="40"
+                    Height="40"
+                    Margin="5"
+                    Command="{Binding NavigateForwardCommand}"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    ToolTip="Go Forward" />
+
+            <Button Content="⟳"
+                    Grid.Column="2"
+                    Width="40"
+                    Height="40"
+                    Margin="5"
+                    Command="{Binding RefreshCommand}"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    ToolTip="Refresh Page" />
+
+            <!-- Address Bar -->
+            <TextBox Text="{Binding Url, Mode=TwoWay}"
+                     Grid.Column="3"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                     FontSize="16"
+                     Padding="10,5"
+                     Margin="10,0"
+                     Width="Auto">
                 <TextBox.InputBindings>
                     <KeyBinding Command="{Binding LoadUrlCommand}"
                                 Key="Return" />
@@ -35,15 +74,57 @@
                                 Key="Enter" />
                 </TextBox.InputBindings>
             </TextBox>
+
+            <!-- Go Button -->
             <Button Content="Go"
-                    Command="{Binding LoadUrlCommand}" />
-        </StackPanel>
+                    Grid.Column="4"
+                    Width="60"
+                    Height="40"
+                    Margin="10,0"
+                    Command="{Binding LoadUrlCommand}"
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+        </Grid>
 
         <!-- WebView2 control for web navigation -->
-        <wv2:WebView2 x:Name="BrowserControl"
+        <wv2:WebView2 Name="BrowserControl"
+                      Grid.Row="1"
+                      Margin="10"
                       HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch"
-                      Grid.Row="1" />
+                      VerticalAlignment="Stretch" />
+
+        <!-- History Panel --><!--
+        <DockPanel Grid.Row="1"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Background="{DynamicResource MaterialDesignPaper}">
+            <ToggleButton Content="⮛ History"
+                          Style="{StaticResource MaterialDesignFlatButton}"
+                          FontSize="16"
+                          Foreground="{DynamicResource MaterialDesignBody}"
+                          Background="{DynamicResource MaterialDesignAccent}"
+                          Width="100"
+                          Height="40"
+                          VerticalAlignment="Top"
+                          Command="{Binding ViewHistoryCommand}" />
+
+            --><!-- Collapsible History List --><!--
+            <Expander IsExpanded="{Binding IsHistoryVisible}"
+                      Header="Encrypted Browsing History"
+                      Background="{DynamicResource MaterialDesignPaper}"
+                      Padding="10"
+                      Margin="5,10,5,10">
+                <ListBox ItemsSource="{Binding HistoryItems}"
+                         Style="{StaticResource MaterialDesignListBox}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"
+                                       FontSize="14"
+                                       Foreground="{DynamicResource MaterialDesignBody}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Expander>
+        </DockPanel-->
 
         <StackPanel Grid.Row="2">
             <Button Content="View History"

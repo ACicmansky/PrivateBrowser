@@ -64,6 +64,11 @@ namespace PrivateBrowser.Services
             { 
                 _webView.CoreWebView2.Navigate(url);
             }
+            else
+            {
+                // If not a valid URL, treat as search query for DuckDuckGo
+                _webView.CoreWebView2.Navigate($"https://duckduckgo.com/?q={Uri.EscapeDataString(url)}");
+            }
         }
 
         public void Dispose()

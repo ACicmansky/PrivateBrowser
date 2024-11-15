@@ -6,6 +6,7 @@
         xmlns:prism="http://prismlibrary.com/"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         xmlns:viewModels="clr-namespace:PrivateBrowser.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         prism:ViewModelLocator.AutoWireViewModel="True"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
         mc:Ignorable="d"
@@ -31,26 +32,26 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <!-- Navigation Buttons -->
-            <Button Content="⮘"
-                    Width="40"
+            <Button Content="{materialDesign:PackIcon ArrowLeftCircle}"
+                    Width="50"
                     Height="40"
                     Margin="5"
                     Command="{Binding NavigateBackCommand}"
                     Style="{StaticResource MaterialDesignFlatButton}"
                     ToolTip="Go Back" />
 
-            <Button Content="⮚"
+            <Button Content="{materialDesign:PackIcon ArrowRightCircle}"
                     Grid.Column="1"
-                    Width="40"
+                    Width="50"
                     Height="40"
                     Margin="5"
                     Command="{Binding NavigateForwardCommand}"
                     Style="{StaticResource MaterialDesignFlatButton}"
                     ToolTip="Go Forward" />
 
-            <Button Content="⟳"
+            <Button Content="{materialDesign:PackIcon Refresh}"
                     Grid.Column="2"
-                    Width="40"
+                    Width="50"
                     Height="40"
                     Margin="5"
                     Command="{Binding RefreshCommand}"

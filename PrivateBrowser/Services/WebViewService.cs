@@ -8,6 +8,7 @@ namespace PrivateBrowser.Services
         void Initialize(WebView2 webView);
         void GoBack();
         void GoForward();
+        void Refresh();
         void NavigateTo(string url);
     }
 
@@ -49,6 +50,11 @@ namespace PrivateBrowser.Services
         {
             if (_webView.CanGoForward)
                 _webView.GoForward();
+        }
+
+        public void Refresh()
+        {
+            _webView.Reload();
         }
 
         public void NavigateTo(string url)

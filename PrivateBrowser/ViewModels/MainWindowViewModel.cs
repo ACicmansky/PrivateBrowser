@@ -20,6 +20,7 @@ namespace PrivateBrowser.ViewModels
 
             NavigateBackCommand = new DelegateCommand(OnNavigateBack);
             NavigateForwardCommand = new DelegateCommand(OnNavigateForward);
+            RefreshCommand = new DelegateCommand(OnRefreshCommand);
             LoadUrlCommand = new DelegateCommand(OnLoadUrl);
             ViewHistoryCommand = new DelegateCommand(OnViewHistoryCommand);
             ClearHistoryCommand = new DelegateCommand(OnClearHistoryCommand);
@@ -35,6 +36,7 @@ namespace PrivateBrowser.ViewModels
 
         public DelegateCommand NavigateBackCommand { get; }
         public DelegateCommand NavigateForwardCommand { get; }
+        public DelegateCommand RefreshCommand { get; }
         public DelegateCommand LoadUrlCommand { get; }
         public DelegateCommand ViewHistoryCommand { get; }
         public DelegateCommand ClearHistoryCommand { get; }
@@ -47,6 +49,11 @@ namespace PrivateBrowser.ViewModels
         private void OnNavigateForward()
         {
             _webViewService.GoForward();
+        }
+
+        private void OnRefreshCommand()
+        {
+            _webViewService.Refresh();
         }
 
         private void OnLoadUrl()
